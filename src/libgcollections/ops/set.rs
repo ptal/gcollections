@@ -1,4 +1,4 @@
-// Copyright 2015 Pierre Talbot (IRCAM)
+// Copyright 2016 Pierre Talbot (IRCAM)
 
 // Licensed under the Apache License, Version 2.0 <LICENSE-APACHE or
 // http://www.apache.org/licenses/LICENSE-2.0> or the MIT license
@@ -6,21 +6,23 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
-//! Generic operations on collection of elements.
-//!
-//! For general informations, see the [module documentation](../index.html).
-
+use wrappers::{HashSet, BTreeSet, BitSet, EnumSet};
 use collections::enum_set::CLike;
-use std::hash::BuildHasher;
-use std::hash::Hash;
+use std::hash::{Hash, BuildHasher};
 use std::iter::FromIterator;
 use std::default::Default;
-use wrappers::{HashSet, BTreeSet, BitSet, EnumSet};
 use std::ops::Deref;
-use num::{One, Zero, Unsigned};
+
+// Construction
+pub trait Empty {
+  fn empty() -> Self;
+}
+
+pub trait Singleton<Item> {
+  fn singleton(value: Item) -> Self;
+}
 
 // Basic set operations
-
 pub trait Intersection<RHS = Self> {
   type Output;
   fn intersection(&self, rhs: &RHS) -> Self::Output;
@@ -107,106 +109,4 @@ set_enum_op_impl! {
 set_op_impl! {
   Difference, difference, difference_with;
   SymmetricDifference, symmetric_difference, symmetric_difference_with
-}
-
-
-// Membership
-
-pub trait Contains<Item> {
-  fn contains(&self, value: &Item) -> bool;
-}
-
-macro_rules! contains_impl {
-  ($t:ty) => {
-    fn contains(&self, value: &$t) -> bool {
-      self.deref().contains(value)
-    }
-  }
-}
-
-impl<T, S> Contains<T> for HashSet<T, S>
-where T: Eq + Hash,
-      S: BuildHasher
-{
-  contains_impl!(T);
-}
-
-impl<T: Ord> Contains<T> for BTreeSet<T> {
-  contains_impl!(T);
-}
-
-impl Contains<usize> for BitSet {
-  contains_impl!(usize);
-}
-
-impl<E: CLike> Contains<E> for EnumSet<E> {
-  contains_impl!(E);
-}
-
-pub trait Disjoint<RHS = Self> {
-  fn is_disjoint(&self, rhs: &RHS) -> bool;
-}
-
-pub trait Subset<RHS = Self> {
-  fn is_subset(&self, rhs: &RHS) -> bool;
-}
-
-pub trait ProperSubset<RHS = Self> {
-  fn is_proper_subset(&self, rhs: &RHS) -> bool;
-}
-
-pub trait Overlap<RHS = Self> {
-  fn overlap(&self, rhs: &RHS) -> bool;
-}
-
-// Other operations
-
-pub trait ShrinkLeft<Bound> {
-  fn shrink_left(&self, lb: Bound) -> Self;
-}
-
-pub trait ShrinkRight<Bound> {
-  fn shrink_right(&self, ub: Bound) -> Self;
-}
-
-pub trait StrictShrinkLeft<Bound> {
-  fn strict_shrink_left(&self, lb: Bound) -> Self;
-}
-
-pub trait StrictShrinkRight<Bound> {
-  fn strict_shrink_right(&self, ub: Bound) -> Self;
-}
-
-// Cardinality
-
-pub trait Cardinality {
-  type Size : Unsigned;
-  fn size(&self) -> Self::Size;
-
-  fn is_singleton(&self) -> bool {
-    self.size() == <Self::Size as One>::one()
-  }
-
-  fn is_empty(&self) -> bool {
-    self.size().is_zero()
-  }
-}
-
-// Construction
-
-pub trait Empty {
-  fn empty() -> Self;
-}
-
-pub trait Singleton<Item> {
-  fn singleton(value: Item) -> Self;
-}
-
-// Bound access
-
-pub trait Bounded
-{
-  type Bound: PartialOrd;
-  fn lower(&self) -> Self::Bound;
-  fn upper(&self) -> Self::Bound;
 }

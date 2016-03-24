@@ -13,7 +13,7 @@
 //! It acts as a temporary substitute and will be replaced when proper generic supports will be added on standard collections. To use these operations on standard collections, you must wrap it inside the structure of the same name in `ncollection::*`. This is because some methods have the same name than existing one's.
 //!
 
-#![feature(collections, enumset)]
+#![feature(collections, enumset, specialization)]
 
 extern crate collections;
 extern crate num;
