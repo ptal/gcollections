@@ -1,0 +1,2 @@
+# gcollection
+Generic Rust Collection
