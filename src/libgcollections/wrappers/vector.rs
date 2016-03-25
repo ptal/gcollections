@@ -61,3 +61,10 @@ impl<T> Pop<Back, T> for Vector<T> {
     self.pop()
   }
 }
+
+impl<T> Cardinality for Vector<T> {
+  type Size = usize;
+  fn size(&self) -> usize {
+    self.size()
+  }
+}

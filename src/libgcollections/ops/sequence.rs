@@ -6,6 +6,9 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
+use ops::constructor::*;
+use ops::cardinality::*;
+
 pub mod ordering {
   pub struct Back;
   pub struct Front;
@@ -18,3 +21,17 @@ pub trait Push<Order, Item> {
 pub trait Pop<Order, Item> {
   fn pop(&mut self) -> Option<Item>;
 }
+
+pub trait Sequence<OrderPush, OrderPop, Item> :
+   Push<OrderPush, Item>
+ + Pop<OrderPop, Item>
+ + IsEmpty
+ + Empty
+{}
+
+impl<R, OrderPush, OrderPop, Item> Sequence<OrderPush, OrderPop, Item> for R where
+ R: Push<OrderPush, Item>,
+ R: Pop<OrderPop, Item>,
+ R: IsEmpty,
+ R: Empty
+{}
