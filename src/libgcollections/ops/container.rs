@@ -58,5 +58,3 @@ pub trait ProperSubset<RHS = Self> {
 pub trait Overlap<RHS = Self> {
   fn overlap(&self, rhs: &RHS) -> bool;
 }
-
-

@@ -13,15 +13,6 @@ use std::iter::FromIterator;
 use std::default::Default;
 use std::ops::Deref;
 
-// Construction
-pub trait Empty {
-  fn empty() -> Self;
-}
-
-pub trait Singleton<Item> {
-  fn singleton(value: Item) -> Self;
-}
-
 // Basic set operations
 pub trait Intersection<RHS = Self> {
   type Output;

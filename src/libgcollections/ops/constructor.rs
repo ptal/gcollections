@@ -6,16 +6,10 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
-pub mod bounded;
-pub mod cardinality;
-pub mod constructor;
-pub mod container;
-pub mod sequence;
-pub mod set;
+pub trait Empty {
+  fn empty() -> Self;
+}
 
-pub use ops::bounded::*;
-pub use ops::cardinality::*;
-pub use ops::constructor::*;
-pub use ops::container::*;
-pub use ops::sequence::*;
-pub use ops::set::*;
+pub trait Singleton<Item> {
+  fn singleton(value: Item) -> Self;
+}
