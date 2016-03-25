@@ -12,10 +12,11 @@ pub mod enum_set;
 pub mod hash_set;
 pub mod optional;
 pub mod primitives;
-
+pub mod vector;
 
 pub use wrappers::hash_set::HashSet;
 pub use wrappers::btree_set::BTreeSet;
 pub use wrappers::enum_set::EnumSet;
 pub use wrappers::bit_set::BitSet;
 pub use wrappers::optional::Optional;
+pub use wrappers::vector::Vector;

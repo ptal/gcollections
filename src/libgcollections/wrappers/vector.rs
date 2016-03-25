@@ -7,7 +7,7 @@
 // except according to those terms.
 
 use ops::*;
-use ops::sequence::Ordering::*;
+use ops::sequence::ordering::*;
 use std::ops::{Deref, DerefMut};
 
 pub struct Vector<T>
@@ -40,31 +40,31 @@ impl<T> DerefMut for Vector<T>
 
 impl<T> Empty for Vector<T> {
   fn empty() -> Vector<T> {
-    vec![]
+    Vector::wrap(vec![])
   }
 }
 
 impl<T> Singleton<T> for Vector<T> {
   fn singleton(value: T) -> Vector<T> {
-    vec![value]
+    Vector::wrap(vec![value])
   }
 }
 
 impl<T> Push<Back, T> for Vector<T> {
   fn push(&mut self, value: T) {
-    self.push(value);
+    self.vec.push(value);
   }
 }
 
 impl<T> Pop<Back, T> for Vector<T> {
   fn pop(&mut self) -> Option<T> {
-    self.pop()
+    self.vec.pop()
   }
 }
 
 impl<T> Cardinality for Vector<T> {
   type Size = usize;
   fn size(&self) -> usize {
-    self.size()
+    self.vec.len()
   }
 }
