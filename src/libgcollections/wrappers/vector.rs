@@ -62,6 +62,18 @@ impl<T> Pop<Back, T> for Vector<T> {
   }
 }
 
+impl<T> Insert<T> for Vector<T> {
+  fn insert(&mut self, value: T) {
+    self.push(value);
+  }
+}
+
+impl<T> Extract<T> for Vector<T> {
+  fn extract(&mut self) -> Option<T> {
+    self.pop()
+  }
+}
+
 impl<T> Cardinality for Vector<T> {
   type Size = usize;
   fn size(&self) -> usize {
