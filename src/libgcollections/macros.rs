@@ -6,9 +6,8 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
-#![macro_use]
-
 // Inspired by the macros from the BigUint impl. (doc.rust-lang.org/num/src/num/bigint.rs.html#235-280)
+#[macro_export]
 macro_rules! forward_val_val_binop {
   (impl<$($bn:ident: $(+ $bs:ident)*),*> $imp:ident for $res:ty, $method:ident, $arg:ty) => {
     impl<$($bn: $($bs+)*),*> $imp<$arg> for $res {
@@ -21,6 +20,7 @@ macro_rules! forward_val_val_binop {
   }
 }
 
+#[macro_export]
 macro_rules! forward_ref_val_binop {
   (impl<$($bn:ident: $(+ $bs:ident)*),*> $imp:ident for $res:ty, $method:ident, $arg:ty) => {
     impl<'a, $($bn: $($bs+)*),*> $imp<$arg> for &'a $res {
@@ -33,6 +33,7 @@ macro_rules! forward_ref_val_binop {
   }
 }
 
+#[macro_export]
 macro_rules! forward_val_ref_binop {
   (impl<$($bn:ident: $(+ $bs:ident)*),*> $imp:ident for $res:ty, $method:ident, $arg:ty) => {
     impl<'b, $($bn: $($bs+)*),*> $imp<&'b $arg> for $res {
@@ -45,6 +46,7 @@ macro_rules! forward_val_ref_binop {
   }
 }
 
+#[macro_export]
 macro_rules! forward_all_binop {
   (impl<$($bn:ident: $(+ $bs:ident)*),*> $imp:ident for $res:ty, $method:ident, $arg:ty) => {
     forward_val_val_binop!(impl<$($bn: $(+ $bs)*),*> $imp for $res, $method, $arg);

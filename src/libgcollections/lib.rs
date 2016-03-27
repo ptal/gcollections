@@ -19,7 +19,7 @@ extern crate collections;
 extern crate num;
 extern crate bit_set;
 
-mod macros;
+pub mod macros;
 pub mod ops;
 pub mod wrappers;
 
