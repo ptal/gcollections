@@ -6,6 +6,7 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
+use kind::*;
 use ops::*;
 use std::ops::*;
 
@@ -43,7 +44,6 @@ impl<T> DerefMut for Optional<T>
     &mut self.value
   }
 }
-
 
 impl<T> Cardinality for Optional<T>
 {
@@ -192,14 +192,37 @@ impl<T> ProperSubset for Optional<T> where
   }
 }
 
-impl<T> Overlap for Optional<T> where
-  T: Overlap
+fn binary_map_unwrap_or<T, U, R, F>(x: &Optional<T>, y: &Optional<U>, default: R, f: F) -> R where
+  F: FnOnce(&T, &U) -> R
 {
-  fn overlap(&self, other: &Optional<T>) -> bool {
-    if self.is_empty() || other.is_empty() { false }
-    else {
-      self.as_ref().unwrap().overlap(other.as_ref().unwrap())
+  if let Some(ref x) = x.as_ref() {
+    if let Some(ref y) = y.as_ref() {
+      return f(x, y)
     }
+  }
+  default
+}
+
+fn binary_value_map_unwrap_or<T, U, R, F>(x: &Optional<T>, y: &U, default: R, f: F) -> R where
+  F: FnOnce(&T, &U) -> R
+{
+  x.as_ref().map_or(default, |x| f(x, y))
+}
+
+impl<T, U> Overlap<Optional<U>> for Optional<T> where
+ T: Overlap<U>
+{
+  fn overlap(&self, other: &Optional<U>) -> bool {
+    binary_map_unwrap_or(self, other, false, T::overlap)
+  }
+}
+
+impl<T, U> Overlap<U> for Optional<T> where
+ T: Overlap<U>,
+ U: GroundType
+{
+  fn overlap(&self, other: &U) -> bool {
+    binary_value_map_unwrap_or(self, other, false, T::overlap)
   }
 }
 
@@ -245,20 +268,20 @@ impl<T> StrictShrinkRight<T> for Optional<T> where
   }
 }
 
-fn binary_map<T, F>(x: Optional<T>, y: Optional<T>, f: F) -> Optional<T> where
-  F: FnOnce(T, T) -> T
+fn binary_map<T, U, R, F>(x: Optional<T>, y: Optional<U>, f: F) -> Optional<R> where
+  F: FnOnce(T, U) -> R
 {
   x.unwrap().map_or(Optional::empty(), |x|
     y.unwrap().map_or(Optional::empty(), |y|
       Optional::singleton(f(x, y))))
 }
 
-impl<T> Add<Optional<T>> for Optional<T> where
-  T: Add<T, Output=T>
+impl<T, U, R> Add<Optional<U>> for Optional<T> where
+  T: Add<U, Output=R>
 {
-  type Output = Optional<T>;
+  type Output = Optional<R>;
 
-  fn add(self, other: Optional<T>) -> Optional<T> {
+  fn add(self, other: Optional<U>) -> Self::Output {
     binary_map(self, other, T::add)
   }
 }
@@ -283,19 +306,20 @@ impl<T> Mul<Optional<T>> for Optional<T> where
   }
 }
 
-fn binary_value_map<T, F>(x: Optional<T>, y: T, f: F) -> Optional<T> where
-  F: FnOnce(T, T) -> T
+fn binary_value_map<T, U, R, F>(x: Optional<T>, y: U, f: F) -> Optional<R> where
+  F: FnOnce(T, U) -> R
 {
   x.unwrap().map_or(Optional::empty(), |x|
       Optional::singleton(f(x, y)))
 }
 
-impl<T> Add<T> for Optional<T> where
-  T: Add<T, Output=T>
+impl<T, U, R> Add<U> for Optional<T> where
+  T: Add<U, Output=R>,
+  U: GroundType
 {
-  type Output = Optional<T>;
+  type Output = Optional<R>;
 
-  fn add(self, other: T) -> Optional<T> {
+  fn add(self, other: U) -> Self::Output {
     binary_value_map(self, other, T::add)
   }
 }
@@ -324,12 +348,13 @@ macro_rules! integer_optional_arithmetics
 {
   ( $( $source:ty ),* ) =>
   {$(
-    impl Add<Optional<$source>> for $source
+    impl<T, R> Add<Optional<T>> for $source where
+     T: Add<$source, Output=R>
     {
-      type Output = Optional<$source>;
+      type Output = Optional<R>;
 
-      fn add(self, other: Optional<$source>) -> Optional<$source> {
-        other.add(self)
+      fn add(self, rhs: Optional<T>) -> Self::Output {
+        rhs + self
       }
     }
 

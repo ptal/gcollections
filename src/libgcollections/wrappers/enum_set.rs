@@ -6,7 +6,6 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
-
 use collections::enum_set::EnumSet as StdEnumSet;
 use collections::enum_set::CLike;
 use std::ops::{Deref, DerefMut};

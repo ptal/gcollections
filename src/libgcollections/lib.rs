@@ -20,6 +20,7 @@ extern crate num;
 extern crate bit_set;
 
 pub mod macros;
+pub mod kind;
 pub mod ops;
 pub mod wrappers;
 

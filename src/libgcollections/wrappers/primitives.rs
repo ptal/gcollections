@@ -6,6 +6,7 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
+use kind::*;
 use ops::*;
 use num::One;
 
@@ -13,6 +14,8 @@ macro_rules! integer_basic_ops_impl
 {
   ( $( $source:ty, $size:ty ),* ) =>
   {$(
+    impl GroundType for $source {}
+
     impl Cardinality for $source
     {
       type Size = $size;

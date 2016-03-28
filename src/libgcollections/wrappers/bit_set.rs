@@ -6,6 +6,7 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
+use kind::*;
 use bit_set::BitSet as StdBitSet;
 use std::ops::{Deref, DerefMut};
 
@@ -13,6 +14,8 @@ pub struct BitSet
 {
   bs: StdBitSet
 }
+
+impl GroundType for BitSet {}
 
 impl BitSet {
   pub fn wrap(bs: StdBitSet) -> BitSet {
