@@ -9,7 +9,7 @@
 use kind::*;
 use bit_set::BitSet as StdBitSet;
 use std::ops::{Deref, DerefMut};
-use ops::container::*;
+use ops::*;
 
 pub struct BitSet
 {
@@ -43,4 +43,27 @@ impl DerefMut for BitSet
 impl Contains<usize> for BitSet
 {
   contains_deref_impl!(usize);
+}
+
+macro_rules! set_op_impl
+{
+  ( $( $t: ident, $m:ident, $v:ident );* ) =>
+  {$(
+    impl $t for BitSet {
+      type Output = BitSet;
+
+      fn $m(&self, other: &BitSet) -> BitSet {
+        let mut new = self.deref().clone();
+        new.$v(other);
+        BitSet::wrap(new)
+      }
+    }
+  )*}
+}
+
+set_op_impl! {
+  Intersection, intersection, intersect_with;
+  Union, union, union_with;
+  Difference, difference, difference_with;
+  SymmetricDifference, symmetric_difference, symmetric_difference_with
 }

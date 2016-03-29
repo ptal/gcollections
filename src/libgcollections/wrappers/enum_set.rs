@@ -9,7 +9,7 @@
 use collections::enum_set::EnumSet as StdEnumSet;
 use collections::enum_set::CLike;
 use std::ops::{Deref, DerefMut};
-use ops::container::*;
+use ops::*;
 
 pub struct EnumSet<T>
 {
@@ -42,4 +42,24 @@ impl<T> DerefMut for EnumSet<T>
 impl<E: CLike> Contains<E> for EnumSet<E>
 {
   contains_deref_impl!(E);
+}
+
+macro_rules! set_op_impl
+{
+  ( $( $t: ident, $m:ident );* ) =>
+  {$(
+    impl<E: CLike> $t for EnumSet<E>
+    {
+      type Output = EnumSet<E>;
+
+      fn $m(&self, other: &EnumSet<E>) -> EnumSet<E> {
+        EnumSet::wrap(self.deref().$m(**other))
+      }
+    }
+  )*}
+}
+
+set_op_impl! {
+  Intersection, intersection;
+  Union, union
 }

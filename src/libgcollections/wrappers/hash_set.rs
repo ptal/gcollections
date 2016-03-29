@@ -10,7 +10,7 @@ use std::collections::HashSet as StdHashSet;
 use std::collections::hash_map::RandomState;
 use std::hash::{BuildHasher, Hash};
 use std::ops::{Deref, DerefMut};
-use ops::container::*;
+use ops::*;
 
 pub struct HashSet<T, S = RandomState>
 {
@@ -47,4 +47,28 @@ where T: Eq + Hash,
       S: BuildHasher
 {
   contains_deref_impl!(T);
+}
+
+macro_rules! set_op_impl
+{
+  ( $( $t: ident, $m:ident );* ) =>
+  {$(
+    impl<T, S> $t for HashSet<T, S>
+    where T: Eq + Hash + Clone,
+          S: BuildHasher + Default
+    {
+      type Output = HashSet<T, S>;
+
+      fn $m(&self, other: &HashSet<T, S>) -> HashSet<T, S> {
+        HashSet::wrap(self.deref().$m(other).cloned().collect())
+      }
+    }
+  )*}
+}
+
+set_op_impl! {
+  Intersection, intersection;
+  Union, union;
+  Difference, difference;
+  SymmetricDifference, symmetric_difference
 }

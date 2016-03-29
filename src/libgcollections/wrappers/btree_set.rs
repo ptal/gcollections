@@ -8,7 +8,7 @@
 
 use std::collections::BTreeSet as StdBTreeSet;
 use std::ops::{Deref, DerefMut};
-use ops::container::*;
+use ops::*;
 
 pub struct BTreeSet<T>
 {
@@ -41,4 +41,27 @@ impl<T> DerefMut for BTreeSet<T>
 impl<T: Ord> Contains<T> for BTreeSet<T>
 {
   contains_deref_impl!(T);
+}
+
+macro_rules! set_op_impl
+{
+  ( $( $t: ident, $m:ident );* ) =>
+  {$(
+    impl<T> $t for BTreeSet<T>
+    where T: Ord+Clone
+    {
+      type Output = BTreeSet<T>;
+
+      fn $m(&self, other: &BTreeSet<T>) -> BTreeSet<T> {
+        BTreeSet::wrap(self.deref().$m(other).cloned().collect())
+      }
+    }
+  )*}
+}
+
+set_op_impl! {
+  Intersection, intersection;
+  Union, union;
+  Difference, difference;
+  SymmetricDifference, symmetric_difference
 }
