@@ -9,6 +9,7 @@
 pub mod bounded;
 pub mod cardinality;
 pub mod constructor;
+#[macro_use]
 pub mod container;
 pub mod multiset;
 pub mod queue;

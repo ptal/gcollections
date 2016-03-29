@@ -8,6 +8,7 @@
 
 use std::collections::BTreeSet as StdBTreeSet;
 use std::ops::{Deref, DerefMut};
+use ops::container::*;
 
 pub struct BTreeSet<T>
 {
@@ -35,4 +36,9 @@ impl<T> DerefMut for BTreeSet<T>
   fn deref_mut<'a>(&'a mut self) -> &'a mut StdBTreeSet<T> {
     &mut self.ts
   }
+}
+
+impl<T: Ord> Contains<T> for BTreeSet<T>
+{
+  contains_deref_impl!(T);
 }

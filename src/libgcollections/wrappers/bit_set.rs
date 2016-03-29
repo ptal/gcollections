@@ -9,6 +9,7 @@
 use kind::*;
 use bit_set::BitSet as StdBitSet;
 use std::ops::{Deref, DerefMut};
+use ops::container::*;
 
 pub struct BitSet
 {
@@ -37,4 +38,9 @@ impl DerefMut for BitSet
   fn deref_mut<'a>(&'a mut self) -> &'a mut StdBitSet {
     &mut self.bs
   }
+}
+
+impl Contains<usize> for BitSet
+{
+  contains_deref_impl!(usize);
 }

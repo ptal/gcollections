@@ -9,6 +9,7 @@
 use collections::enum_set::EnumSet as StdEnumSet;
 use collections::enum_set::CLike;
 use std::ops::{Deref, DerefMut};
+use ops::container::*;
 
 pub struct EnumSet<T>
 {
@@ -36,4 +37,9 @@ impl<T> DerefMut for EnumSet<T>
   fn deref_mut<'a>(&'a mut self) -> &'a mut StdEnumSet<T> {
     &mut self.es
   }
+}
+
+impl<E: CLike> Contains<E> for EnumSet<E>
+{
+  contains_deref_impl!(E);
 }

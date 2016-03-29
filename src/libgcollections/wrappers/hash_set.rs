@@ -10,6 +10,7 @@ use std::collections::HashSet as StdHashSet;
 use std::collections::hash_map::RandomState;
 use std::hash::{BuildHasher, Hash};
 use std::ops::{Deref, DerefMut};
+use ops::container::*;
 
 pub struct HashSet<T, S = RandomState>
 {
@@ -39,4 +40,11 @@ impl<T, S> DerefMut for HashSet<T, S>
   fn deref_mut<'a>(&'a mut self) -> &'a mut StdHashSet<T, S> {
     &mut self.hs
   }
+}
+
+impl<T, S> Contains<T> for HashSet<T, S>
+where T: Eq + Hash,
+      S: BuildHasher
+{
+  contains_deref_impl!(T);
 }

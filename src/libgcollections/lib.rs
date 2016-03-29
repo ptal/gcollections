@@ -21,6 +21,7 @@ extern crate bit_set;
 
 pub mod macros;
 pub mod kind;
+#[macro_use]
 pub mod ops;
 pub mod wrappers;
 
