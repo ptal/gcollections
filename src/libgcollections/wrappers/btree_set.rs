@@ -47,8 +47,8 @@ macro_rules! set_op_impl
 {
   ( $( $t: ident, $m:ident );* ) =>
   {$(
-    impl<T> $t for BTreeSet<T>
-    where T: Ord+Clone
+    impl<T> $t for BTreeSet<T> where
+     T: Ord+Clone
     {
       type Output = BTreeSet<T>;
 

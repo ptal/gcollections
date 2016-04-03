@@ -79,6 +79,11 @@ macro_rules! integer_basic_ops_impl
 
 integer_basic_ops_impl!(i8,u8,u8,u8,i16,u16,u16,u16,i32,u32,u32,u32,i64,u64,u64,u64,isize,usize,usize,usize);
 
+impl GroundType for bool {}
+impl GroundType for char {}
+impl GroundType for f32 {}
+impl GroundType for f64 {}
+
 #[cfg(test)]
 mod tests {
   use ops::*;

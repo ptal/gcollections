@@ -53,9 +53,9 @@ macro_rules! set_op_impl
 {
   ( $( $t: ident, $m:ident );* ) =>
   {$(
-    impl<T, S> $t for HashSet<T, S>
-    where T: Eq + Hash + Clone,
-          S: BuildHasher + Default
+    impl<T, S> $t for HashSet<T, S> where
+     T: Eq + Hash + Clone,
+     S: BuildHasher + Default
     {
       type Output = HashSet<T, S>;
 

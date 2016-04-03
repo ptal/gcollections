@@ -53,19 +53,22 @@ impl<T> Cardinality for Optional<T>
   }
 }
 
-impl<T> Singleton<T> for Optional<T> {
+impl<T> Singleton<T> for Optional<T>
+{
   fn singleton(value: T) -> Optional<T> {
     Optional::wrap(Some(value))
   }
 }
 
-impl<T> Empty for Optional<T> {
+impl<T> Empty for Optional<T>
+{
   fn empty() -> Optional<T> {
     Optional::wrap(None)
   }
 }
 
-impl<T: Bounded> Bounded for Optional<T> {
+impl<T: Bounded> Bounded for Optional<T>
+{
   type Bound = T::Bound;
   fn lower(&self) -> T::Bound {
     debug_assert!(!self.is_empty(), "Cannot access lower bound on empty `Option` type.");
@@ -77,9 +80,12 @@ impl<T: Bounded> Bounded for Optional<T> {
   }
 }
 
-impl<T: PartialEq+Clone> Intersection for Optional<T> {
+impl<T> Intersection<Optional<T>> for Optional<T> where
+ T: Clone + PartialEq
+{
   type Output = Optional<T>;
-  fn intersection(&self, other: &Optional<T>) -> Optional<T> {
+
+  fn intersection(&self, other: &Optional<T>) -> Self::Output {
     if self.is_empty() || other.is_empty() || self != other {
       Optional::empty()
     }
@@ -89,21 +95,12 @@ impl<T: PartialEq+Clone> Intersection for Optional<T> {
   }
 }
 
-impl<T: PartialEq+Clone> Difference for Optional<T> {
+impl<T> Intersection<T> for Optional<T> where
+ T: Clone + PartialEq
+{
   type Output = Optional<T>;
-  fn difference(&self, other: &Optional<T>) -> Optional<T> {
-    if self.is_empty() || self == other {
-      Optional::empty()
-    }
-    else {
-      self.clone()
-    }
-  }
-}
 
-impl<T: PartialEq+Clone> Intersection<T> for Optional<T> {
-  type Output = Optional<T>;
-  fn intersection(&self, other: &T) -> Optional<T> {
+  fn intersection(&self, other: &T) -> Self::Output {
     if self.is_empty() || self.as_ref().unwrap() != other {
       Optional::empty()
     }
@@ -113,9 +110,44 @@ impl<T: PartialEq+Clone> Intersection<T> for Optional<T> {
   }
 }
 
-impl<T: PartialEq+Clone> Difference<T> for Optional<T> {
+macro_rules! primitive_optional_intersection_operation
+{
+  ( $( $source:ty ),* ) =>
+  {$(
+    impl Intersection<Optional<$source>> for $source
+    {
+      type Output = Optional<$source>;
+
+      fn intersection(&self, other: &Optional<$source>) -> Self::Output {
+        other.intersection(self)
+      }
+    }
+  )*}
+}
+
+primitive_optional_intersection_operation!(i8,u8,i16,u16,i32,u32,i64,u64,isize,usize,f32,f64,bool,char);
+
+impl<T> Difference<Optional<T>> for Optional<T> where
+ T: Clone + PartialEq
+{
   type Output = Optional<T>;
-  fn difference(&self, other: &T) -> Optional<T> {
+
+  fn difference(&self, other: &Optional<T>) -> Self::Output {
+    if self.is_empty() || self == other {
+      Optional::empty()
+    }
+    else {
+      self.clone()
+    }
+  }
+}
+
+impl<T> Difference<T> for Optional<T> where
+ T: Clone + PartialEq
+{
+  type Output = Optional<T>;
+
+  fn difference(&self, other: &T) -> Self::Output {
     if self.is_empty() || self.as_ref().unwrap() == other {
       Optional::empty()
     }
@@ -125,23 +157,15 @@ impl<T: PartialEq+Clone> Difference<T> for Optional<T> {
   }
 }
 
-macro_rules! integer_optional_set_operations
+macro_rules! primitive_optional_difference_operation
 {
   ( $( $source:ty ),* ) =>
   {$(
-    impl Intersection<Optional<$source>> for $source
-    {
-      type Output = Optional<$source>;
-      fn intersection(&self, other: &Optional<$source>) -> Optional<$source> {
-        other.intersection(self)
-      }
-    }
-
     impl Difference<Optional<$source>> for $source
     {
       type Output = Optional<$source>;
 
-      fn difference(&self, other: &Optional<$source>) -> Optional<$source> {
+      fn difference(&self, other: &Optional<$source>) -> Self::Output {
         if other.is_empty() || self != other.as_ref().unwrap() {
           Optional::singleton(self.clone())
         }
@@ -153,10 +177,10 @@ macro_rules! integer_optional_set_operations
   )*}
 }
 
-integer_optional_set_operations!(i8,u8,i16,u16,i32,u32,i64,u64,isize,usize);
+primitive_optional_difference_operation!(i8,u8,i16,u16,i32,u32,i64,u64,isize,usize,f32,f64,bool,char);
 
 impl<T, U> Disjoint<Optional<U>> for Optional<T> where
-  T: Disjoint<U>
+ T: Disjoint<U>
 {
   fn is_disjoint(&self, other: &Optional<U>) -> bool {
     self.is_empty() || other.is_empty() ||
@@ -164,18 +188,44 @@ impl<T, U> Disjoint<Optional<U>> for Optional<T> where
   }
 }
 
-impl<U, T> Contains<U> for Optional<T> where
-  T: Contains<U>
+impl<T, U> Disjoint<U> for Optional<T> where
+ T: Disjoint<U>,
+ U: GroundType
+{
+  fn is_disjoint(&self, other: &U) -> bool {
+    self.is_empty() ||
+    self.as_ref().unwrap().is_disjoint(other)
+  }
+}
+
+macro_rules! primitive_optional_disjoint_operation
+{
+  ( $( $source:ty ),* ) =>
+  {$(
+    impl<T> Disjoint<Optional<T>> for $source where
+     T: Disjoint<$source>
+    {
+      fn is_disjoint(&self, other: &Optional<T>) -> bool {
+        other.is_disjoint(self)
+      }
+    }
+  )*}
+}
+
+primitive_optional_disjoint_operation!(i8,u8,i16,u16,i32,u32,i64,u64,isize,usize,f32,f64,bool,char);
+
+impl<T, U> Contains<U> for Optional<T> where
+ T: Contains<U>
 {
   fn contains(&self, value: &U) -> bool {
     self.as_ref().map_or(false, |x| x.contains(value))
   }
 }
 
-impl<T, U> Subset<Optional<U>> for Optional<T> where
-  T: Subset<U>
+impl<T> Subset<Optional<T>> for Optional<T> where
+ T: Subset
 {
-  fn is_subset(&self, other: &Optional<U>) -> bool {
+  fn is_subset(&self, other: &Optional<T>) -> bool {
     if self.is_empty() { true }
     else if other.is_empty() { false }
     else {
@@ -184,8 +234,8 @@ impl<T, U> Subset<Optional<U>> for Optional<T> where
   }
 }
 
-impl<T> ProperSubset for Optional<T> where
-  T: Subset + PartialEq
+impl<T> ProperSubset<Optional<T>> for Optional<T> where
+ T: Subset + PartialEq
 {
   fn is_proper_subset(&self, other: &Optional<T>) -> bool {
     self.is_subset(other) && self != other

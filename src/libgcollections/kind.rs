@@ -6,7 +6,7 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
-//! We distinguish between ground and non-ground type. A ground type is basically a type that is not parametrized by a type parameter. This distinction is done for implementing binary operations on types.
+//! We distinguish between ground and non-ground types. A ground type is basically a type that is not parametrized by a type parameter. This distinction is done for implementing binary operations on types.
 //!
 //! Let's start with an example implementing `Add` for an option-like type with the following semantics:
 //!
