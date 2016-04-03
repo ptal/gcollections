@@ -6,6 +6,9 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
+use ops::constructor::*;
+use num::PrimInt;
+
 pub trait Bounded
 {
   type Bound: PartialOrd;
@@ -29,3 +32,30 @@ pub trait StrictShrinkRight<Bound> {
   fn strict_shrink_right(&self, ub: Bound) -> Self;
 }
 
+pub trait IntervalKind {}
+
+impl<Bound, R> StrictShrinkLeft<Bound> for R where
+  Bound: PrimInt,
+  R: ShrinkLeft<Bound> + Empty + IntervalKind
+{
+  default fn strict_shrink_left(&self, lb: Bound) -> R {
+    if lb == Bound::max_value() {
+      R::empty()
+    } else {
+      self.shrink_left(lb + Bound::one())
+    }
+  }
+}
+
+impl<Bound, R> StrictShrinkRight<Bound> for R where
+  Bound: PrimInt,
+  R: ShrinkRight<Bound> + Empty + IntervalKind
+{
+  default fn strict_shrink_right(&self, ub: Bound) -> R {
+    if ub == Bound::min_value() {
+      R::empty()
+    } else {
+      self.shrink_right(ub - Bound::one())
+    }
+  }
+}
