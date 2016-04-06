@@ -1,5 +1,5 @@
 # gcollections
 
-Compiled with `rustc 1.9.0-nightly (21922e1f4 2016-03-21)`.
+Compiled on the nightly channel of Rust. Use [rustup](www.rustup.rs) for managing compiler channels. Download the exact same version of the compiler used with `rustup override add nightly-2016-04-05`.
 
-Generic traits over Rust collections library.
+This library provides a set of generic traits over Rust collections library. An incomplete documentation is available [here](http://www.hyc.io/gcollections).

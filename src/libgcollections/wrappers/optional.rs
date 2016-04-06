@@ -10,7 +10,6 @@ use kind::*;
 use ops::*;
 use std::ops::*;
 
-
 fn binary_map_unwrap_or<T, U, R, F>(x: &Optional<T>, y: &Optional<U>, default: R, f: F) -> R where
  F: FnOnce(&T, &U) -> R
 {

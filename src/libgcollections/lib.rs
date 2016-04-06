@@ -10,7 +10,7 @@
 //!
 //! This library categorizes operations on collections such as sets, tuples or vectors. The goal is to allow designing generic algorithms by specifying trait bounds on type parameters.
 //!
-//! It acts as a temporary substitute and will be replaced when proper generic supports will be added on standard collections. To use these operations on standard collections, you must wrap it inside the structure of the same name in `ncollection::*`. This is because some methods have the same name than existing one's.
+//! It acts as a temporary substitute and will be replaced when proper generic supports will be added on standard collections. Generic operations are implemented on wrappers of the standard collections (available in `wrappers::*`), this is due to name conflicts between existing methods and traits function names.
 //!
 
 #![feature(collections, enumset, specialization)]
