@@ -7,10 +7,11 @@
 // except according to those terms.
 
 use num::{One, Zero, Unsigned};
+use std::cmp::Ord;
 
 pub trait Cardinality
 {
-  type Size : Unsigned;
+  type Size : Unsigned + Ord;
   fn size(&self) -> Self::Size;
 }
 
