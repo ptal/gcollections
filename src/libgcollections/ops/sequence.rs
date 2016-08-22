@@ -25,13 +25,13 @@ pub trait Pop<Order, Item> {
 pub trait Sequence<OrderPush, OrderPop, Item> :
    Push<OrderPush, Item>
  + Pop<OrderPop, Item>
- + IsEmpty
+ + Cardinality
  + Empty
 {}
 
 impl<R, OrderPush, OrderPop, Item> Sequence<OrderPush, OrderPop, Item> for R where
  R: Push<OrderPush, Item>,
  R: Pop<OrderPop, Item>,
- R: IsEmpty,
+ R: Cardinality,
  R: Empty
 {}

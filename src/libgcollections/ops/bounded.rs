@@ -6,6 +6,7 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
+use kind::IntervalKind;
 use ops::constructor::*;
 use num::PrimInt;
 
@@ -31,8 +32,6 @@ pub trait StrictShrinkLeft<Bound> {
 pub trait StrictShrinkRight<Bound> {
   fn strict_shrink_right(&self, ub: Bound) -> Self;
 }
-
-pub trait IntervalKind {}
 
 impl<Bound, R> StrictShrinkLeft<Bound> for R where
   Bound: PrimInt,

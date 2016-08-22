@@ -24,6 +24,8 @@ pub mod kind;
 #[macro_use]
 pub mod ops;
 pub mod wrappers;
+pub mod queue;
+pub mod stack;
 
 pub use wrappers::hash_set::HashSet;
 pub use wrappers::btree_set::BTreeSet;

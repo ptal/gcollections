@@ -6,19 +6,27 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
+use kind::SequenceKind;
 use ops::*;
 use ops::sequence::ordering::*;
+use stack::*;
 use std::ops::{Deref, DerefMut};
+
+type VectorStack<T> = Stack<Vector<T>, Back, T>;
 
 pub struct Vector<T>
 {
   vec: Vec<T>
 }
 
+impl<T> SequenceKind for Vector<T> {}
+
 impl<T> Vector<T>
 {
   pub fn wrap(vec: Vec<T>) -> Vector<T> {
-    Vector{vec: vec}
+    Vector {
+      vec: vec
+    }
   }
 }
 
@@ -44,12 +52,6 @@ impl<T> Empty for Vector<T> {
   }
 }
 
-impl<T> Singleton<T> for Vector<T> {
-  fn singleton(value: T) -> Vector<T> {
-    Vector::wrap(vec![value])
-  }
-}
-
 impl<T> Push<Back, T> for Vector<T> {
   fn push(&mut self, value: T) {
     self.vec.push(value);
@@ -59,18 +61,6 @@ impl<T> Push<Back, T> for Vector<T> {
 impl<T> Pop<Back, T> for Vector<T> {
   fn pop(&mut self) -> Option<T> {
     self.vec.pop()
-  }
-}
-
-impl<T> Insert<T> for Vector<T> {
-  fn insert(&mut self, value: T) {
-    self.push(value);
-  }
-}
-
-impl<T> Extract<T> for Vector<T> {
-  fn extract(&mut self) -> Option<T> {
-    self.pop()
   }
 }
 

@@ -12,7 +12,6 @@ pub mod constructor;
 #[macro_use]
 pub mod container;
 pub mod multiset;
-pub mod queue;
 pub mod sequence;
 pub mod set;
 
@@ -21,6 +20,5 @@ pub use ops::cardinality::*;
 pub use ops::constructor::*;
 pub use ops::container::*;
 pub use ops::multiset::*;
-pub use ops::queue::*;
 pub use ops::sequence::*;
 pub use ops::set::*;

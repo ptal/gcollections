@@ -99,3 +99,6 @@
 //!
 
 pub trait GroundType {}
+
+pub trait IntervalKind {}
+pub trait SequenceKind {}
