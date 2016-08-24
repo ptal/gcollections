@@ -12,7 +12,7 @@ use ops::sequence::ordering::*;
 use stack::*;
 use std::ops::{Deref, DerefMut};
 
-type VectorStack<T> = Stack<Vector<T>, Back, T>;
+pub type VectorStack<T> = Stack<Vector<T>, Back, T>;
 
 pub struct Vector<T>
 {

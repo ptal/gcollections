@@ -32,4 +32,5 @@ pub use wrappers::btree_set::BTreeSet;
 pub use wrappers::enum_set::EnumSet;
 pub use wrappers::bit_set::BitSet;
 pub use wrappers::optional::Optional;
-
+pub use wrappers::vector::Vector;
+pub use wrappers::vector_deque::VectorDeque;

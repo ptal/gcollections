@@ -14,10 +14,10 @@ use queue::*;
 use std::ops::{Deref, DerefMut};
 use std::collections::VecDeque;
 
-type DequeFrontStack<T> = Stack<VectorDeque<T>, Front, T>;
-type DequeBackStack<T> = Stack<VectorDeque<T>, Back, T>;
-type DequeFrontBackQueue<T> = Queue<VectorDeque<T>, Front, Back, T>;
-type DequeBackFrontQueue<T> = Queue<VectorDeque<T>, Back, Front, T>;
+pub type DequeFrontStack<T> = Stack<VectorDeque<T>, Front, T>;
+pub type DequeBackStack<T> = Stack<VectorDeque<T>, Back, T>;
+pub type DequeFrontBackQueue<T> = Queue<VectorDeque<T>, Front, Back, T>;
+pub type DequeBackFrontQueue<T> = Queue<VectorDeque<T>, Back, Front, T>;
 
 pub struct VectorDeque<T>
 {
