@@ -100,5 +100,9 @@
 
 pub trait GroundType {}
 
+pub trait Collection {
+  type Item;
+}
+
 pub trait IntervalKind {}
 pub trait SequenceKind {}

@@ -30,8 +30,11 @@ macro_rules! integer_basic_ops_impl
       }
     }
 
+    impl Collection for $source {
+      type Item = $source;
+    }
+
     impl Bounded for $source {
-      type Bound = $source;
       fn lower(&self) -> $source {
         *self
       }

@@ -6,7 +6,7 @@ Generic Collection Library
 [travis-image]: https://travis-ci.org/ptal/gcollections.png
 [travis]: https://travis-ci.org/ptal/gcollections
 
-Compiled on the nightly channel of Rust. Use [rustup](www.rustup.rs) for managing compiler channels. Download the exact same version of the compiler used with `rustup override add nightly-2016-08-12`.
+Compiled on the nightly channel of Rust. Use [rustup](www.rustup.rs) for managing compiler channels. Download the exact same version of the compiler used with `rustup override add nightly-2016-10-10`.
 
 This library provides a set of generic traits over Rust collections library.
 

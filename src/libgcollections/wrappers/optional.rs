@@ -99,19 +99,6 @@ impl<T> Empty for Optional<T>
   }
 }
 
-impl<T: Bounded> Bounded for Optional<T>
-{
-  type Bound = T::Bound;
-  fn lower(&self) -> T::Bound {
-    debug_assert!(!self.is_empty(), "Cannot access lower bound on empty `Option` type.");
-    self.as_ref().unwrap().lower()
-  }
-  fn upper(&self) -> T::Bound {
-    debug_assert!(!self.is_empty(), "Cannot access upper bound on empty `Option` type.");
-    self.as_ref().unwrap().upper()
-  }
-}
-
 impl<T> Intersection<Optional<T>> for Optional<T> where
  T: Clone + PartialEq
 {
@@ -307,48 +294,6 @@ macro_rules! primitive_optional_overlap_operation
 
 primitive_optional_overlap_operation!(i8,u8,i16,u16,i32,u32,i64,u64,isize,usize,f32,f64,bool,char);
 
-fn shrink_if<T, U, F>(value: &Optional<T>, bound: U, cond: F) -> Optional<T> where
- T: Clone,
- F: FnOnce(&T, &U) -> bool
-{
-  match &value.value {
-    &Some(ref x) if cond(x, &bound) => Optional::singleton(x.clone()),
-    _ => Optional::empty()
-  }
-}
-
-impl<T, U> ShrinkLeft<U> for Optional<T> where
- T: PartialOrd<U> + Clone
-{
-  fn shrink_left(&self, lb: U) -> Self {
-    shrink_if(self, lb, |x, lb| x >= lb)
-  }
-}
-
-impl<T, U> ShrinkRight<U> for Optional<T> where
- T: PartialOrd<U> + Clone
-{
-  fn shrink_right(&self, ub: U) -> Self {
-    shrink_if(self, ub, |x, ub| x <= ub)
-  }
-}
-
-impl<T, U> StrictShrinkLeft<U> for Optional<T> where
- T: PartialOrd<U> + Clone
-{
-  fn strict_shrink_left(&self, lb: U) -> Self {
-    shrink_if(self, lb, |x, lb| x > lb)
-  }
-}
-
-impl<T, U> StrictShrinkRight<U> for Optional<T> where
- T: PartialOrd<U> + Clone
-{
-  fn strict_shrink_right(&self, ub: U) -> Self {
-    shrink_if(self, ub, |x, ub| x < ub)
-  }
-}
-
 impl<T, U, R> Add<Optional<U>> for Optional<T> where
  T: Add<U, Output=R>
 {
@@ -493,26 +438,6 @@ mod tests {
   }
 
   #[test]
-  fn bound_test() {
-    assert_eq!(zero.lower(), 0);
-    assert_eq!(zero.upper(), 0);
-    assert_eq!(ten.lower(), 10);
-    assert_eq!(ten.upper(), 10);
-  }
-
-  #[test]
-  #[should_panic]
-  fn bound_upper_panic_test() {
-    empty.upper();
-  }
-
-  #[test]
-  #[should_panic]
-  fn bound_lower_panic_test() {
-    empty.lower();
-  }
-
-  #[test]
   fn intersection_test() {
     let sym_cases = vec![
       (empty, empty, empty),
@@ -638,28 +563,6 @@ mod tests {
     for (x,y,r1,r2) in cases.into_iter() {
       assert!(x.is_proper_subset(&y) == r1, "{:?} proper_subset {:?} is not equal to {:?}", x, y, r1);
       assert!(y.is_proper_subset(&x) == r2, "{:?} proper_subset {:?} is not equal to {:?}", y, x, r2);
-    }
-  }
-
-  #[test]
-  fn shrink_tests() {
-    // First two elements are data. The next are resp. for shrink_left, shrink_right,
-    // strict_shrink_left and strict_shrink_right.
-    let cases = vec![
-      (empty, 0, empty, empty, empty, empty),
-      (empty, 1, empty, empty, empty, empty),
-      (zero, 0, zero, zero, empty, empty),
-      (zero, 1, empty, zero, empty, zero),
-      (ten, 9, ten, empty, ten, empty),
-      (ten, 10, ten, ten, empty, empty),
-      (ten, 11, empty, ten, empty, ten),
-    ];
-
-    for (x,y,r1,r2,r3,r4) in cases.into_iter() {
-      assert!(x.shrink_left(y) == r1, "{:?} shrink_left {:?} is not equal to {:?}", x, y, r1);
-      assert!(x.shrink_right(y) == r2, "{:?} shrink_right {:?} is not equal to {:?}", x, y, r2);
-      assert!(x.strict_shrink_left(y) == r3, "{:?} strict_shrink_left {:?} is not equal to {:?}", x, y, r3);
-      assert!(x.strict_shrink_right(y) == r4, "{:?} strict_shrink_right {:?} is not equal to {:?}", x, y, r4);
     }
   }
 

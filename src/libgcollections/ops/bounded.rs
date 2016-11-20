@@ -6,55 +6,55 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
-use kind::IntervalKind;
+use kind::*;
 use ops::constructor::*;
-use num::PrimInt;
+use num;
+use num::Integer;
 
-pub trait Bounded
+pub trait Bounded: Collection
 {
-  type Bound: PartialOrd;
-  fn lower(&self) -> Self::Bound;
-  fn upper(&self) -> Self::Bound;
+  fn lower(&self) -> Self::Item;
+  fn upper(&self) -> Self::Item;
 }
 
-pub trait ShrinkLeft<Bound> {
-  fn shrink_left(&self, lb: Bound) -> Self;
+pub trait ShrinkLeft: Bounded {
+  fn shrink_left(&self, lb: Self::Item) -> Self;
 }
 
-pub trait ShrinkRight<Bound> {
-  fn shrink_right(&self, ub: Bound) -> Self;
+pub trait ShrinkRight: Bounded {
+  fn shrink_right(&self, ub: Self::Item) -> Self;
 }
 
-pub trait StrictShrinkLeft<Bound> {
-  fn strict_shrink_left(&self, lb: Bound) -> Self;
+pub trait StrictShrinkLeft: Bounded {
+  fn strict_shrink_left(&self, lb: Self::Item) -> Self;
 }
 
-pub trait StrictShrinkRight<Bound> {
-  fn strict_shrink_right(&self, ub: Bound) -> Self;
+pub trait StrictShrinkRight: Bounded {
+  fn strict_shrink_right(&self, ub: Self::Item) -> Self;
 }
 
-impl<Bound, R> StrictShrinkLeft<Bound> for R where
-  Bound: PrimInt,
-  R: ShrinkLeft<Bound> + Empty + IntervalKind
+impl<B, R> StrictShrinkLeft for R where
+  R: ShrinkLeft + Empty + IntervalKind + Bounded<Item=B>,
+  B: Integer + num::Bounded
 {
-  default fn strict_shrink_left(&self, lb: Bound) -> R {
-    if lb == Bound::max_value() {
+  default fn strict_shrink_left(&self, lb: B) -> R {
+    if lb == B::max_value() {
       R::empty()
     } else {
-      self.shrink_left(lb + Bound::one())
+      self.shrink_left(lb + B::one())
     }
   }
 }
 
-impl<Bound, R> StrictShrinkRight<Bound> for R where
-  Bound: PrimInt,
-  R: ShrinkRight<Bound> + Empty + IntervalKind
+impl<B, R> StrictShrinkRight for R where
+  R: ShrinkRight + Empty + IntervalKind + Bounded<Item=B>,
+  B: Integer + num::Bounded
 {
-  default fn strict_shrink_right(&self, ub: Bound) -> R {
-    if ub == Bound::min_value() {
+  default fn strict_shrink_right(&self, ub: B) -> R {
+    if ub == B::min_value() {
       R::empty()
     } else {
-      self.shrink_right(ub - Bound::one())
+      self.shrink_right(ub - B::one())
     }
   }
 }
