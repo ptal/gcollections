@@ -16,11 +16,11 @@ use kind::*;
 
 pub trait Alloc: AssociativeCollection
 {
-  fn alloc(&mut self, value: Self::Value) -> Self::Location;
+  fn alloc(&mut self, value: Self::Item) -> Self::Location;
 }
 
 /// Returns the value previously at location `loc`.
 pub trait Replace: AssociativeCollection
 {
-  fn replace(&mut self, loc: Self::Location, value: Self::Value) -> Self::Value;
+  fn replace(&mut self, loc: Self::Location, value: Self::Item) -> Self::Item;
 }

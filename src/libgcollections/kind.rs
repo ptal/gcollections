@@ -104,10 +104,9 @@ pub trait Collection {
   type Item;
 }
 
-pub trait AssociativeCollection
+pub trait AssociativeCollection : Collection
 {
   type Location;
-  type Value;
 }
 
 pub trait IntervalKind {}
