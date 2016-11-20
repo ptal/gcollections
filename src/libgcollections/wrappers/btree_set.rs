@@ -6,6 +6,7 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
+use kind::*;
 use std::collections::BTreeSet as StdBTreeSet;
 use std::ops::{Deref, DerefMut};
 use ops::*;
@@ -20,6 +21,10 @@ impl<T: Ord> BTreeSet<T>
   pub fn wrap(ts: StdBTreeSet<T>) -> BTreeSet<T> {
     BTreeSet{ts: ts}
   }
+}
+
+impl<T> Collection for BTreeSet<T> {
+  type Item = T;
 }
 
 impl<T> Deref for BTreeSet<T>
@@ -38,7 +43,7 @@ impl<T> DerefMut for BTreeSet<T>
   }
 }
 
-impl<T: Ord> Contains<T> for BTreeSet<T>
+impl<T: Ord> Contains for BTreeSet<T>
 {
   contains_deref_impl!(T);
 }

@@ -6,6 +6,7 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
+use kind::*;
 use std::collections::HashSet as StdHashSet;
 use std::collections::hash_map::RandomState;
 use std::hash::{BuildHasher, Hash};
@@ -26,6 +27,10 @@ impl<T, S> HashSet<T, S> where
   }
 }
 
+impl<T, S> Collection for HashSet<T, S> {
+  type Item = T;
+}
+
 impl<T, S> Deref for HashSet<T, S>
 {
   type Target = StdHashSet<T, S>;
@@ -42,7 +47,7 @@ impl<T, S> DerefMut for HashSet<T, S>
   }
 }
 
-impl<T, S> Contains<T> for HashSet<T, S>
+impl<T, S> Contains for HashSet<T, S>
 where T: Eq + Hash,
       S: BuildHasher
 {

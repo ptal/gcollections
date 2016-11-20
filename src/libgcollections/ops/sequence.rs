@@ -6,6 +6,7 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
+use kind::*;
 use ops::constructor::*;
 use ops::cardinality::*;
 
@@ -14,24 +15,24 @@ pub mod ordering {
   pub struct Front;
 }
 
-pub trait Push<Order, Item> {
-  fn push(&mut self, value: Item);
+pub trait Push<Order> : Collection {
+  fn push(&mut self, value: Self::Item);
 }
 
-pub trait Pop<Order, Item> {
-  fn pop(&mut self) -> Option<Item>;
+pub trait Pop<Order> : Collection {
+  fn pop(&mut self) -> Option<Self::Item>;
 }
 
-pub trait Sequence<OrderPush, OrderPop, Item> :
-   Push<OrderPush, Item>
- + Pop<OrderPop, Item>
+pub trait Sequence<OrderPush, OrderPop> :
+   Push<OrderPush>
+ + Pop<OrderPop>
  + Cardinality
  + Empty
 {}
 
-impl<R, OrderPush, OrderPop, Item> Sequence<OrderPush, OrderPop, Item> for R where
- R: Push<OrderPush, Item>,
- R: Pop<OrderPop, Item>,
+impl<R, OrderPush, OrderPop> Sequence<OrderPush, OrderPop> for R where
+ R: Push<OrderPush>,
+ R: Pop<OrderPop>,
  R: Cardinality,
  R: Empty
 {}

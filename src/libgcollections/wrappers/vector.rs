@@ -6,13 +6,13 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
-use kind::SequenceKind;
+use kind::*;
 use ops::*;
 use ops::sequence::ordering::*;
 use stack::*;
 use std::ops::{Deref, DerefMut};
 
-pub type VectorStack<T> = Stack<Vector<T>, Back, T>;
+pub type VectorStack<T> = Stack<Vector<T>, Back>;
 
 pub struct Vector<T>
 {
@@ -28,6 +28,10 @@ impl<T> Vector<T>
       vec: vec
     }
   }
+}
+
+impl<T> Collection for Vector<T> {
+  type Item = T;
 }
 
 impl<T> Deref for Vector<T>
@@ -52,13 +56,13 @@ impl<T> Empty for Vector<T> {
   }
 }
 
-impl<T> Push<Back, T> for Vector<T> {
+impl<T> Push<Back> for Vector<T> {
   fn push(&mut self, value: T) {
     self.vec.push(value);
   }
 }
 
-impl<T> Pop<Back, T> for Vector<T> {
+impl<T> Pop<Back> for Vector<T> {
   fn pop(&mut self) -> Option<T> {
     self.vec.pop()
   }

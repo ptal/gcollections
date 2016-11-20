@@ -6,6 +6,7 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
+use kind::*;
 use ops::constructor::*;
 use ops::cardinality::*;
 use ops::sequence::*;
@@ -13,25 +14,29 @@ use ops::multiset::*;
 use std::ops::{Deref, DerefMut};
 use std::marker::PhantomData;
 
-pub struct Stack<S, Ordering, T>
+pub struct Stack<S, Ordering>
 {
   seq: S,
-  phantom_ordering: PhantomData<Ordering>,
-  phantom_t: PhantomData<T>
+  phantom_ordering: PhantomData<Ordering>
 }
 
-impl<S, Ordering, T> Stack<S, Ordering, T>
+impl<S, Ordering> Stack<S, Ordering>
 {
   pub fn wrap(seq: S) -> Self {
     Stack {
       seq: seq,
-      phantom_ordering: PhantomData,
-      phantom_t: PhantomData
+      phantom_ordering: PhantomData
     }
   }
 }
 
-impl<S, Ordering, T> Deref for Stack<S, Ordering, T>
+impl<S, Ordering> Collection for Stack<S, Ordering> where
+  S: Collection
+{
+  type Item = <S as Collection>::Item;
+}
+
+impl<S, Ordering> Deref for Stack<S, Ordering>
 {
   type Target = S;
 
@@ -40,14 +45,14 @@ impl<S, Ordering, T> Deref for Stack<S, Ordering, T>
   }
 }
 
-impl<S, Ordering, T> DerefMut for Stack<S, Ordering, T>
+impl<S, Ordering> DerefMut for Stack<S, Ordering>
 {
   fn deref_mut<'a>(&'a mut self) -> &'a mut S {
     &mut self.seq
   }
 }
 
-impl<S, Ordering, T> Empty for Stack<S, Ordering, T> where
+impl<S, Ordering> Empty for Stack<S, Ordering> where
  S: Empty
 {
   fn empty() -> Self {
@@ -55,7 +60,7 @@ impl<S, Ordering, T> Empty for Stack<S, Ordering, T> where
   }
 }
 
-impl<S, Ordering, T> Cardinality for Stack<S, Ordering, T> where
+impl<S, Ordering> Cardinality for Stack<S, Ordering> where
  S: Cardinality
 {
   type Size = <S as Cardinality>::Size;
@@ -64,18 +69,18 @@ impl<S, Ordering, T> Cardinality for Stack<S, Ordering, T> where
   }
 }
 
-impl<S, Ordering, T> Insert<T> for Stack<S, Ordering, T> where
- S: Push<Ordering, T>
+impl<S, Ordering> Insert for Stack<S, Ordering> where
+ S: Push<Ordering>
 {
-  fn insert(&mut self, value: T) {
+  fn insert(&mut self, value: Self::Item) {
     self.push(value);
   }
 }
 
-impl<S, Ordering, T> Extract<T> for Stack<S, Ordering, T> where
- S: Pop<Ordering, T>
+impl<S, Ordering> Extract for Stack<S, Ordering> where
+ S: Pop<Ordering>
 {
-  fn extract(&mut self) -> Option<T> {
+  fn extract(&mut self) -> Option<Self::Item> {
     self.pop()
   }
 }

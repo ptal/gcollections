@@ -61,6 +61,10 @@ impl<T> Optional<T>
   }
 }
 
+impl<T> Collection for Optional<T> {
+  type Item = T;
+}
+
 impl<T> Deref for Optional<T>
 {
   type Target = Option<T>;
@@ -85,7 +89,7 @@ impl<T> Cardinality for Optional<T>
   }
 }
 
-impl<T> Singleton<T> for Optional<T>
+impl<T> Singleton for Optional<T>
 {
   fn singleton(value: T) -> Optional<T> {
     Optional::wrap(Some(value))
@@ -233,11 +237,11 @@ macro_rules! primitive_optional_disjoint_operation
 
 primitive_optional_disjoint_operation!(i8,u8,i16,u16,i32,u32,i64,u64,isize,usize,f32,f64,bool,char);
 
-impl<T, U> Contains<U> for Optional<T> where
- T: Contains<U>
+impl<T> Contains for Optional<T> where
+  T: Eq
 {
-  fn contains(&self, value: &U) -> bool {
-    self.as_ref().map_or(false, |x| x.contains(value))
+  fn contains(&self, value: &T) -> bool {
+    self.as_ref().map_or(false, |x| x == value)
   }
 }
 

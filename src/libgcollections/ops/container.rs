@@ -6,9 +6,11 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
+use kind::*;
+
 // Membership
-pub trait Contains<Item> {
-  fn contains(&self, value: &Item) -> bool;
+pub trait Contains : Collection {
+  fn contains(&self, value: &Self::Item) -> bool;
 }
 
 pub trait Disjoint<RHS = Self> {

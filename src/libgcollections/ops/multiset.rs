@@ -6,27 +6,28 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
+use kind::*;
 use ops::constructor::*;
 use ops::cardinality::*;
 
-pub trait Insert<Item> {
-  fn insert(&mut self, value: Item);
+pub trait Insert: Collection {
+  fn insert(&mut self, value: Self::Item);
 }
 
-pub trait Extract<Item> {
-  fn extract(&mut self) -> Option<Item>;
+pub trait Extract: Collection {
+  fn extract(&mut self) -> Option<Self::Item>;
 }
 
-pub trait Multiset<Item> :
-   Insert<Item>
- + Extract<Item>
+pub trait Multiset:
+   Insert
+ + Extract
  + IsEmpty
  + Empty
 {}
 
-impl<R, Item> Multiset<Item> for R where
- R: Insert<Item>,
- R: Extract<Item>,
+impl<R> Multiset for R where
+ R: Insert,
+ R: Extract,
  R: IsEmpty,
  R: Empty
 {}

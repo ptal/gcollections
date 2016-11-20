@@ -6,21 +6,21 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
-use kind::SequenceKind;
+use kind::*;
 use ops::multiset::Insert;
 
 pub trait Empty {
   fn empty() -> Self;
 }
 
-pub trait Singleton<Item> {
-  fn singleton(value: Item) -> Self;
+pub trait Singleton : Collection {
+  fn singleton(value: Self::Item) -> Self;
 }
 
-impl<R, Item> Singleton<Item> for R where
- R: Empty + Insert<Item> + SequenceKind
+impl<R> Singleton for R where
+ R: Empty + Insert + Collection + SequenceKind
 {
-  default fn singleton(value: Item) -> Self {
+  default fn singleton(value: Self::Item) -> Self {
     let mut collection = R::empty();
     collection.insert(value);
     collection

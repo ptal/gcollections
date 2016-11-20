@@ -24,6 +24,10 @@ impl BitSet {
   }
 }
 
+impl Collection for BitSet {
+  type Item = usize;
+}
+
 impl Deref for BitSet
 {
   type Target = StdBitSet;
@@ -40,9 +44,9 @@ impl DerefMut for BitSet
   }
 }
 
-impl Contains<usize> for BitSet
+impl Contains for BitSet
 {
-  contains_deref_impl!(usize);
+  contains_deref_impl!(Self::Item);
 }
 
 macro_rules! set_op_impl

@@ -6,6 +6,7 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
+use kind::*;
 use collections::enum_set::EnumSet as StdEnumSet;
 use collections::enum_set::CLike;
 use std::ops::{Deref, DerefMut};
@@ -21,6 +22,11 @@ impl<E: CLike> EnumSet<E>
   pub fn wrap(es: StdEnumSet<E>) -> EnumSet<E> {
     EnumSet{es: es}
   }
+}
+
+impl<E> Collection for EnumSet<E>
+{
+  type Item = E;
 }
 
 impl<T> Deref for EnumSet<T>
@@ -39,7 +45,7 @@ impl<T> DerefMut for EnumSet<T>
   }
 }
 
-impl<E: CLike> Contains<E> for EnumSet<E>
+impl<E: CLike> Contains for EnumSet<E>
 {
   contains_deref_impl!(E);
 }

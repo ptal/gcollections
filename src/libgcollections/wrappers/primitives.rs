@@ -24,7 +24,7 @@ macro_rules! integer_basic_ops_impl
       }
     }
 
-    impl Singleton<$source> for $source {
+    impl Singleton for $source {
       fn singleton(value: $source) -> $source {
         value
       }
@@ -43,7 +43,7 @@ macro_rules! integer_basic_ops_impl
       }
     }
 
-    impl Contains<$source> for $source
+    impl Contains for $source
     {
       fn contains(&self, value: &$source) -> bool {
         self == value

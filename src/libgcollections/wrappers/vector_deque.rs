@@ -6,7 +6,7 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
-use kind::SequenceKind;
+use kind::*;
 use ops::*;
 use ops::sequence::ordering::*;
 use stack::*;
@@ -14,10 +14,10 @@ use queue::*;
 use std::ops::{Deref, DerefMut};
 use std::collections::VecDeque;
 
-pub type DequeFrontStack<T> = Stack<VectorDeque<T>, Front, T>;
-pub type DequeBackStack<T> = Stack<VectorDeque<T>, Back, T>;
-pub type DequeFrontBackQueue<T> = Queue<VectorDeque<T>, Front, Back, T>;
-pub type DequeBackFrontQueue<T> = Queue<VectorDeque<T>, Back, Front, T>;
+pub type DequeFrontStack<T> = Stack<VectorDeque<T>, Front>;
+pub type DequeBackStack<T> = Stack<VectorDeque<T>, Back>;
+pub type DequeFrontBackQueue<T> = Queue<VectorDeque<T>, Front, Back>;
+pub type DequeBackFrontQueue<T> = Queue<VectorDeque<T>, Back, Front>;
 
 pub struct VectorDeque<T>
 {
@@ -33,6 +33,10 @@ impl<T> VectorDeque<T>
       deque: deque
     }
   }
+}
+
+impl<T> Collection for VectorDeque<T> {
+  type Item = T;
 }
 
 impl<T> Deref for VectorDeque<T>
@@ -57,25 +61,25 @@ impl<T> Empty for VectorDeque<T> {
   }
 }
 
-impl<T> Push<Front, T> for VectorDeque<T> {
+impl<T> Push<Front> for VectorDeque<T> {
   fn push(&mut self, value: T) {
     self.deque.push_front(value);
   }
 }
 
-impl<T> Push<Back, T> for VectorDeque<T> {
+impl<T> Push<Back> for VectorDeque<T> {
   fn push(&mut self, value: T) {
     self.deque.push_back(value);
   }
 }
 
-impl<T> Pop<Front, T> for VectorDeque<T> {
+impl<T> Pop<Front> for VectorDeque<T> {
   fn pop(&mut self) -> Option<T> {
     self.deque.pop_front()
   }
 }
 
-impl<T> Pop<Back, T> for VectorDeque<T> {
+impl<T> Pop<Back> for VectorDeque<T> {
   fn pop(&mut self) -> Option<T> {
     self.deque.pop_back()
   }

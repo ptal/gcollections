@@ -6,12 +6,11 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
-use num::{One, Zero, Unsigned};
-use std::cmp::Ord;
+use num::{One, Zero, Unsigned, Integer};
 
 pub trait Cardinality
 {
-  type Size : Unsigned + Ord;
+  type Size: Unsigned + Integer;
   fn size(&self) -> Self::Size;
 }
 
