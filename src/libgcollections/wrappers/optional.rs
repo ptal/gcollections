@@ -418,7 +418,6 @@ mul_optional_arithmetics!(i8,u8,i16,u16,i32,u32,i64,u64,isize,usize,f32,f64,bool
 #[cfg(test)]
 mod tests {
   use super::*;
-  use ops::*;
 
   const empty: Optional<i32> = Optional { value: None };
   const zero: Optional<i32> = Optional { value: Some(0) };

@@ -8,7 +8,6 @@
 
 pub mod bit_set;
 pub mod btree_set;
-pub mod enum_set;
 pub mod hash_set;
 pub mod optional;
 pub mod primitives;

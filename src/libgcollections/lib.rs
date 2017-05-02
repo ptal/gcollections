@@ -13,7 +13,7 @@
 //! It acts as a temporary substitute and will be replaced when proper generic supports will be added on standard collections. Generic operations are implemented on wrappers of the standard collections (available in `wrappers::*`), this is due to name conflicts between existing methods and traits function names.
 //!
 
-#![feature(collections, enumset, specialization)]
+#![feature(collections, specialization)]
 
 extern crate collections;
 extern crate num;
@@ -32,7 +32,6 @@ pub use queue::*;
 pub use stack::*;
 pub use wrappers::hash_set::*;
 pub use wrappers::btree_set::*;
-pub use wrappers::enum_set::*;
 pub use wrappers::bit_set::*;
 pub use wrappers::optional::*;
 pub use wrappers::vector::*;
