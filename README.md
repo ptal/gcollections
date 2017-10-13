@@ -10,7 +10,7 @@ Compiled on the nightly channel of Rust. Use [rustup](www.rustup.rs) for managin
 
 This library provides a set of generic traits over Rust collections library.
 
-Examples and more in the [documentation](http://hyc.io/gcollections)
+Examples and more in the [documentation](https://docs.rs/gcollections/)
 
 ## License
 
