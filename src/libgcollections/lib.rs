@@ -13,9 +13,8 @@
 //! It acts as a temporary substitute and will be replaced when proper generic supports will be added on standard collections. Generic operations are implemented on wrappers of the standard collections (available in `wrappers::*`), this is due to name conflicts between existing methods and traits function names.
 //!
 
-#![feature(collections, specialization)]
+#![feature(specialization)]
 
-extern crate collections;
 extern crate num;
 extern crate bit_set;
 
