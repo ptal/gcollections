@@ -33,28 +33,38 @@ pub trait StrictShrinkRight: Bounded {
   fn strict_shrink_right(&self, ub: Self::Item) -> Self;
 }
 
-impl<B, R> StrictShrinkLeft for R where
-  R: ShrinkLeft + Empty + IntervalKind + Bounded<Item=B>,
-  B: Integer + num::Bounded
+macro_rules! strict_shrink_impl
 {
-  default fn strict_shrink_left(&self, lb: B) -> R {
-    if lb == B::max_value() {
-      R::empty()
-    } else {
-      self.shrink_left(lb + B::one())
+  ( $( $keyword:tt ),*) =>
+  {
+    impl<B, R> StrictShrinkLeft for R where
+      R: ShrinkLeft + Empty + IntervalKind + Bounded<Item=B>,
+      B: Integer + num::Bounded
+    {
+      $($keyword)* fn strict_shrink_left(&self, lb: B) -> R {
+        if lb == B::max_value() {
+          R::empty()
+        } else {
+          self.shrink_left(lb + B::one())
+        }
+      }
+    }
+    impl<B, R> StrictShrinkRight for R where
+      R: ShrinkRight + Empty + IntervalKind + Bounded<Item=B>,
+      B: Integer + num::Bounded
+    {
+      $($keyword)* fn strict_shrink_right(&self, ub: B) -> R {
+        if ub == B::min_value() {
+          R::empty()
+        } else {
+          self.shrink_right(ub - B::one())
+        }
+      }
     }
   }
 }
 
-impl<B, R> StrictShrinkRight for R where
-  R: ShrinkRight + Empty + IntervalKind + Bounded<Item=B>,
-  B: Integer + num::Bounded
-{
-  default fn strict_shrink_right(&self, ub: B) -> R {
-    if ub == B::min_value() {
-      R::empty()
-    } else {
-      self.shrink_right(ub - B::one())
-    }
-  }
-}
+#[cfg(feature = "nightly")]
+strict_shrink_impl!(default);
+#[cfg(not(feature = "nightly"))]
+strict_shrink_impl!();

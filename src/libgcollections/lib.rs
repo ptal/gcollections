@@ -13,10 +13,14 @@
 //! It acts as a temporary substitute and will be replaced when proper generic supports will be added on standard collections. Generic operations are implemented on wrappers of the standard collections (available in `wrappers::*`), this is due to name conflicts between existing methods and traits function names.
 //!
 
-#![feature(specialization)]
+//! If the feature `nightly` is defined (use `cargo build --features="nightly"`), then some of the traits are implemented using specialization.
+//! On `stable` they are implemented for every type satisfying some trait bounds, but a user cannot override the definitions.
+
+#![cfg_attr(feature = "nightly", feature(specialization))]
 
 extern crate num;
 extern crate bit_set;
+extern crate trilean;
 
 pub mod macros;
 pub mod kind;

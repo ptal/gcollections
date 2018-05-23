@@ -24,18 +24,42 @@ pub trait IsEmpty
   fn is_empty(&self) -> bool;
 }
 
-impl<R> IsSingleton for R where
- R: Cardinality
+/// For an explanation on the macros, see `lib.rs`.
+
+macro_rules! is_singleton_impl
 {
-  default fn is_singleton(&self) -> bool {
-    self.size() == <<Self as Cardinality>::Size as One>::one()
+  ( $( $keyword:tt ),*) =>
+  {
+    impl<R> IsSingleton for R where
+     R: Cardinality
+    {
+      $($keyword)* fn is_singleton(&self) -> bool {
+        self.size() == <<Self as Cardinality>::Size as One>::one()
+      }
+    }
   }
 }
 
-impl <R> IsEmpty for R where
- R: Cardinality
+#[cfg(feature = "nightly")]
+is_singleton_impl!(default);
+#[cfg(not(feature = "nightly"))]
+is_singleton_impl!();
+
+macro_rules! is_empty_impl
 {
-  default fn is_empty(&self) -> bool {
-    self.size().is_zero()
+  ( $( $keyword:tt ),*) =>
+  {
+    impl <R> IsEmpty for R where
+     R: Cardinality
+    {
+      $($keyword)* fn is_empty(&self) -> bool {
+        self.size().is_zero()
+      }
+    }
   }
 }
+
+#[cfg(feature = "nightly")]
+is_empty_impl!(default);
+#[cfg(not(feature = "nightly"))]
+is_empty_impl!();

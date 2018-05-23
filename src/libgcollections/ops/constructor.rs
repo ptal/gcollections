@@ -17,12 +17,24 @@ pub trait Singleton : Collection {
   fn singleton(value: Self::Item) -> Self;
 }
 
-impl<R> Singleton for R where
- R: Empty + Insert + Collection + SequenceKind
+macro_rules! singleton_impl
 {
-  default fn singleton(value: Self::Item) -> Self {
-    let mut collection = R::empty();
-    collection.insert(value);
-    collection
+  ( $( $keyword:tt ),*) =>
+  {
+    impl<R> Singleton for R where
+     R: Empty + Insert + Collection + SequenceKind
+    {
+      $($keyword)* fn singleton(value: Self::Item) -> Self {
+        let mut collection = R::empty();
+        collection.insert(value);
+        collection
+      }
+    }
+
   }
 }
+
+#[cfg(feature = "nightly")]
+singleton_impl!(default);
+#[cfg(not(feature = "nightly"))]
+singleton_impl!();

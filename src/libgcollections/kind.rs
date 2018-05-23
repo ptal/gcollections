@@ -30,11 +30,10 @@
 //!
 //! There is several problems:
 //!
-//! * Generally implementing `impl<T, U> Add<Option<T>> for U` will lead to the compilation error: "only traits defined in the current crate can be implemented for a type parameter" or "type parameter `U` must be used as the type parameter for some local type".
-//! * Also, admit that we define `Add` for a type `Vec<T>` in a similar fashion, we will have a conflicting implementation in case we do `Option<A> + Vec<B>`. First of all, saying we want to define such a computation, what should be the type of the result? `Vec<Option<C>>` or `Option<Vec<C>>` (`C` being `<A as Add<B>>::Output`)? A wrong solution is to depend on the operation order, so `a + b` and `b + a` would be different, which violates the commutativity property of addition. Our choice here is to let undefined such implementation and only propose one between `Option<A>` and `Option<B>`, and between `Option<A>` and `B` if `B` is a ground type (implement `GroundType`).
+//! * Generally, implementing `impl<T, U> Add<Option<T>> for U` will lead to the compilation error: "only traits defined in the current crate can be implemented for a type parameter" or "type parameter `U` must be used as the type parameter for some local type".
+//! * Also, admit that we define `Add` for a type `Vec<T>` in a similar fashion, we will have a conflicting implementation in case we do `Option<A> + Vec<B>`. First of all, saying we want to define such a computation, what should be the type of the result? `Vec<Option<C>>` or `Option<Vec<C>>` (`C` being `<A as Add<B>>::Output`)? A wrong solution is to depend on the operation order, so `a + b` and `b + a` would be different, which violates the commutativity property of addition. Our choice here is to let undefined such implementation and only propose one between `Option<A>` and `Option<B>`, and between `Option<A>` and `B` if `B` is a ground type (implements `GroundType`).
 //!
 //! ```rust
-//! #![feature(specialization)]
 //! use gcollections::kind::*;
 //! use std::ops::Add;
 //!
