@@ -14,6 +14,7 @@ pub mod multiset;
 pub mod sequence;
 #[macro_use]
 pub mod set;
+pub mod lattice;
 
 pub use ops::associative::*;
 pub use ops::bounded::*;
@@ -22,3 +23,4 @@ pub use ops::constructor::*;
 pub use ops::multiset::*;
 pub use ops::sequence::*;
 pub use ops::set::*;
+pub use ops::lattice::*;

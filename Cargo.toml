@@ -1,7 +1,7 @@
 [package]
 
 name = "gcollections"
-version = "1.0.0"
+version = "1.1.0"
 authors = [ "Pierre Talbot <ptalbot@hyc.io>" ]
 
 description = "Generic traits over Rust collections library."
@@ -20,8 +20,7 @@ path = "src/libgcollections/lib.rs"
 
 num = "^0.1.29"
 bit-set = "^0.2.0"
-trilean = "^0.1.0"
+trilean = "^1.0.1"
 
 [features]
-
 nightly = []
