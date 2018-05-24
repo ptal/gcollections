@@ -19,7 +19,7 @@ env:
 matrix:
   include:
     - rust: nightly
-      env: FEATURES="--features nightly"
+      env: FEATURES="--features=nightly"
     - rust: stable
       env: FEATURES=""
 
