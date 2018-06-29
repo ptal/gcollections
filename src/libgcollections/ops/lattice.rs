@@ -85,7 +85,6 @@ impl<R> BoundedLattice for R where
  R: Bot,
 {}
 
-#[cfg(test)]
 pub mod test
 {
   use super::*;
