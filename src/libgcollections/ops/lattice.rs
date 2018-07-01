@@ -15,13 +15,11 @@ use trilean::SKleene;
 pub trait Join
 {
   fn join(self, other: Self) -> Self;
-  fn join_in_place(&mut self, other: Self);
 }
 
 pub trait Meet
 {
   fn meet(self, other: Self) -> Self;
-  fn meet_in_place(&mut self, other: Self);
 }
 
 pub trait Entailment
@@ -31,6 +29,7 @@ pub trait Entailment
 
 pub trait StrictEntailment
 {
+  /// Must be similar to `a.entail(&b) && a != b`.
   fn strict_entail(&self, other: &Self) -> SKleene;
 }
 
