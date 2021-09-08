@@ -57,7 +57,7 @@ pub trait Overlap<RHS = Self> {
 macro_rules! contains_deref_impl {
   ($t:ty) => {
     fn contains(&self, value: &$t) -> bool {
-      self.deref().contains(value)
+      self.deref().contains(value.to_owned())
     }
   }
 }
