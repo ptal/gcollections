@@ -1,10 +1,7 @@
 Generic Collection Library
 ==========================
 
-[![ptal on Travis CI][travis-image]][travis]
-
-[travis-image]: https://travis-ci.org/ptal/gcollections.png
-[travis]: https://travis-ci.org/ptal/gcollections
+[![Build Status](https://app.travis-ci.com/ptal/gcollections.svg?branch=master)](https://app.travis-ci.com/ptal/gcollections)
 
 
 This library provides a set of generic traits over Rust collections library.
