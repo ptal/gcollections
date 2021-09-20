@@ -8,7 +8,7 @@
 
 use kind::*;
 use ops::*;
-use num::One;
+use num_traits::One;
 
 macro_rules! integer_basic_ops_impl
 {

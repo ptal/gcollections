@@ -6,7 +6,8 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
-use num::{One, Zero, Unsigned, Integer};
+use num_traits::{One, Zero, Unsigned};
+use num_integer::{Integer};
 
 pub trait Cardinality
 {

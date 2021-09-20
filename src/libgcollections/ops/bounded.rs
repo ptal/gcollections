@@ -8,8 +8,7 @@
 
 use kind::*;
 use ops::constructor::*;
-use num;
-use num::Integer;
+use num_integer::Integer;
 
 pub trait Bounded: Collection
 {
@@ -39,7 +38,7 @@ macro_rules! strict_shrink_impl
   {
     impl<B, R> StrictShrinkLeft for R where
       R: ShrinkLeft + Empty + IntervalKind + Bounded<Item=B>,
-      B: Integer + num::Bounded
+      B: Integer + num_traits::Bounded
     {
       $($keyword)* fn strict_shrink_left(&self, lb: B) -> R {
         if lb == B::max_value() {
@@ -51,7 +50,7 @@ macro_rules! strict_shrink_impl
     }
     impl<B, R> StrictShrinkRight for R where
       R: ShrinkRight + Empty + IntervalKind + Bounded<Item=B>,
-      B: Integer + num::Bounded
+      B: Integer + num_traits::Bounded
     {
       $($keyword)* fn strict_shrink_right(&self, ub: B) -> R {
         if ub == B::min_value() {

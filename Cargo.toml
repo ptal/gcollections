@@ -18,9 +18,10 @@ path = "src/libgcollections/lib.rs"
 
 [dependencies]
 
-num = "^0.1.29"
-bit-set = "^0.2.0"
-trilean = "^1.0.1"
+num-integer = "0.1.44"
+num-traits = "0.2.14"
+bit-set = "0.5.0"
+trilean = "1.1.0"
 
 [features]
 nightly = []

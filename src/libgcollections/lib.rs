@@ -18,7 +18,8 @@
 
 #![cfg_attr(feature = "nightly", feature(specialization))]
 
-extern crate num;
+extern crate num_integer;
+extern crate num_traits;
 extern crate bit_set;
 extern crate trilean;
 
