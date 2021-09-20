@@ -1,11 +1,11 @@
 [package]
 
 name = "gcollections"
-version = "1.4.0"
+version = "1.5.0"
 authors = [ "Pierre Talbot <ptalbot@hyc.io>" ]
 
 description = "Generic traits over Rust collections library."
-documentation = "https://docs.rs/gcollections/1.4.0/gcollections/"
+documentation = "https://docs.rs/gcollections/1.5.0/gcollections/"
 repository = "https://github.com/ptal/gcollections"
 readme = "README.md"
 keywords = ["data-structure", "containers", "generic"]
