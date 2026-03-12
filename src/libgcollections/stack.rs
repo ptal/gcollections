@@ -6,11 +6,11 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
-use kind::*;
-use ops::constructor::*;
-use ops::cardinality::*;
-use ops::sequence::*;
-use ops::multiset::*;
+use crate::kind::*;
+use crate::ops::constructor::*;
+use crate::ops::cardinality::*;
+use crate::ops::sequence::*;
+use crate::ops::multiset::*;
 use std::ops::{Deref, DerefMut};
 use std::marker::PhantomData;
 

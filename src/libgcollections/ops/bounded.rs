@@ -6,8 +6,8 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
-use kind::*;
-use ops::constructor::*;
+use crate::kind::*;
+use crate::ops::constructor::*;
 use num_integer::Integer;
 
 pub trait Bounded: Collection

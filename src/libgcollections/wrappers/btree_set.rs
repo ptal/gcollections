@@ -6,10 +6,10 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
-use kind::*;
+use crate::kind::*;
 use std::collections::BTreeSet as StdBTreeSet;
 use std::ops::{Deref, DerefMut};
-use ops::*;
+use crate::ops::*;
 
 pub struct BTreeSet<T>
 {

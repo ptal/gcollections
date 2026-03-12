@@ -6,11 +6,11 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
-use kind::*;
-use ops::*;
-use ops::sequence::ordering::*;
-use stack::*;
-use queue::*;
+use crate::kind::*;
+use crate::ops::*;
+use crate::ops::sequence::ordering::*;
+use crate::stack::*;
+use crate::queue::*;
 use std::ops::{Deref, DerefMut};
 use std::collections::VecDeque;
 

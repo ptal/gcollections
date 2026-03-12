@@ -31,9 +31,9 @@ pub mod wrappers;
 pub mod queue;
 pub mod stack;
 
-pub use kind::*;
+pub use crate::kind::*;
 pub use queue::*;
-pub use stack::*;
+pub use crate::stack::*;
 pub use wrappers::hash_set::*;
 pub use wrappers::btree_set::*;
 pub use wrappers::bit_set::*;

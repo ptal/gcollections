@@ -6,8 +6,8 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
-use kind::*;
-use ops::*;
+use crate::kind::*;
+use crate::ops::*;
 use num_traits::One;
 
 macro_rules! integer_basic_ops_impl
@@ -89,7 +89,7 @@ impl GroundType for f64 {}
 
 #[cfg(test)]
 mod tests {
-  use ops::*;
+  use crate::ops::*;
 
   #[test]
   fn simple_tests() {

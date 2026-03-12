@@ -6,9 +6,9 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
-use kind::*;
-use ops::constructor::*;
-use ops::cardinality::*;
+use crate::kind::*;
+use crate::ops::constructor::*;
+use crate::ops::cardinality::*;
 
 pub trait Insert: Collection {
   fn insert(&mut self, value: Self::Item);

@@ -6,8 +6,8 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
-use kind::*;
-use ops::*;
+use crate::kind::*;
+use crate::ops::*;
 use std::ops::*;
 
 fn binary_map_unwrap_or<T, U, R, F>(x: &Optional<T>, y: &Optional<U>, default: R, f: F) -> R where

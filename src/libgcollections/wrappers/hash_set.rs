@@ -6,12 +6,12 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
-use kind::*;
+use crate::kind::*;
 use std::collections::HashSet as StdHashSet;
 use std::collections::hash_map::RandomState;
 use std::hash::{BuildHasher, Hash};
 use std::ops::{Deref, DerefMut};
-use ops::*;
+use crate::ops::*;
 
 pub struct HashSet<T, S = RandomState>
 {

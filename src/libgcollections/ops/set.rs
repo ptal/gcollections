@@ -6,7 +6,7 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
-use kind::*;
+use crate::kind::*;
 
 // Basic set operations
 pub trait Intersection<RHS = Self> {
